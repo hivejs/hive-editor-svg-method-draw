@@ -8,10 +8,10 @@ function setup(plugin, imports, register) {
 
   editor.registerEditor('svg', function*() {
     var editor = document.querySelector('#editor')
-    
+
     var iframe = document.createElement('iframe')
     iframe.setAttribute('src', '/static/hive-editor-svg/lib/Method-Draw/index.html')
-    
+
     // Maximize editor
     document.body.style['position'] = 'absolute'
     document.body.style['bottom'] =
@@ -23,7 +23,7 @@ function setup(plugin, imports, register) {
     iframe.style['width'] = '100%'
     iframe.style['height'] = '100%'
     iframe.setAttribute('border', '0')
-    
+
     // load the editor
     yield function(cb) {
       iframe.onload = function() {
@@ -31,10 +31,11 @@ function setup(plugin, imports, register) {
       }
       editor.appendChild(iframe)
     }
-    
+
+    iframe.contentDocument.querySelector('#menu_bar').style['visibility'] = 'hidden'
+
     /* bind editor */
-    var editable = iframe.contentDocument.querySelector('#svgcontent')
-      , methodDraw = iframe.contentDocument.defaultView.methodDraw
+    var methodDraw = iframe.contentDocument.defaultView.methodDraw
     return bindEditor(methodDraw, iframe.contentDocument)
   })
   register()
