@@ -18,7 +18,7 @@
 var gulf = require('gulf')
   , domOT = require('dom-ot')
   , MutationSummary = require('mutation-summary')
- 
+
 module.exports = function(methodDraw, document) {
   var doc = new gulf.EditableDocument(new gulf.MemoryAdapter, domOT)
   var contenteditable = document.querySelector('#svgcontent')
@@ -46,10 +46,10 @@ module.exports = function(methodDraw, document) {
   doc._collectChanges = function() {
     // changes are automatically collected by MutationSummary
   }
-  
+
   registerObserver(contenteditable)
   domOT.adapters.mutationSummary.createIndex(contenteditable)
-  
+
   var observer
   function registerObserver(contenteditable) {
       observer = new MutationSummary({
@@ -76,6 +76,6 @@ module.exports = function(methodDraw, document) {
       op.apply(contenteditable, /*index:*/true, /*dry:*/true)
     })
   }
-  
+
   return doc
 }
