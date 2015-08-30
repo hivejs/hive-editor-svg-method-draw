@@ -1,13 +1,13 @@
 {
   "name": "hive-editor-svg",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "SVG editor for hive.js",
   "main": "index.js",
   "dependencies": {
-    "gulf": "1.x"
-  , "gulf-contenteditable": "1.x"
-  , "dom-ot": "2.x"
-  , "mutation-summary": "^0.0.0"
+    "gulf": "1.x",
+    "gulf-contenteditable": "1.x",
+    "dom-ot": "2.x",
+    "mutation-summary": "^0.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
