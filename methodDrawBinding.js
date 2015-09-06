@@ -22,29 +22,35 @@ var gulf = require('gulf')
 module.exports = function(methodDraw, document) {
   var doc = new gulf.EditableDocument(new gulf.MemoryAdapter, domOT)
   var contenteditable = document.querySelector('#svgcontent')
-  doc._change = function(newcontent, changes) {
-    observer && observer.disconnect()
-    console.log(newcontent)
-    if(changes) {
-      contenteditable = document.querySelector('#svgcontent')
-      var ops = domOT.unpackOps(changes)
-      ops.forEach(function(op) {
-        op.apply(contenteditable, /*index:*/true)
-      })
-      observer && observer.reconnect()
-    }
-    else {
-      methodDraw.loadFromString(newcontent.outerHTML)
-      setTimeout(function() {
-        contenteditable = document.querySelector('#svgcontent') // Must be after loadFromString
-        domOT.adapters.mutationSummary.createIndex(contenteditable)
-        registerObserver(contenteditable)
-      },1000)
-    }
+
+  doc._setContents = function(newcontent, cb) {
+    methodDraw.loadFromString(newcontent.outerHTML)
+    setTimeout(function() {
+      contenteditable = document.querySelector('#svgcontent') // Must be after loadFromString
+      domOT.adapters.mutationSummary.createIndex(contenteditable)
+      registerObserver(contenteditable)
+      cb()
+    },1000)
   }
 
-  doc._collectChanges = function() {
+  doc._change = function(changes, cb) {
+    observer && observer.disconnect()
+    console.log(changes)
+
+    contenteditable = document.querySelector('#svgcontent')
+
+    var ops = domOT.unpackOps(changes)
+    ops.forEach(function(op) {
+      op.apply(contenteditable, /*index:*/true)
+    })
+
+    observer && observer.reconnect()
+    cb()
+  }
+
+  doc._collectChanges = function(cb) {
     // changes are automatically collected by MutationSummary
+    cb()
   }
 
   registerObserver(contenteditable)
@@ -52,7 +58,7 @@ module.exports = function(methodDraw, document) {
 
   var observer
   function registerObserver(contenteditable) {
-      observer = new MutationSummary({
+    observer = new MutationSummary({
       rootNode: contenteditable, // (defaults to window.document)
       oldPreviousSibling: true,
       queries: [

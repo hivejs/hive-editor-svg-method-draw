@@ -4,8 +4,7 @@
   "description": "SVG editor for hive.js",
   "main": "index.js",
   "dependencies": {
-    "gulf": "1.x",
-    "gulf-contenteditable": "1.x",
+    "gulf": "3.x",
     "dom-ot": "2.x",
     "mutation-summary": "^0.0.0"
   },
