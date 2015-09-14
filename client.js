@@ -6,9 +6,8 @@ module.exports.provides = []
 function setup(plugin, imports, register) {
   var editor = imports.editor
 
-  editor.registerEditor('svg', function*() {
-    var editor = document.querySelector('#editor')
-
+  editor.registerEditor('Method-Draw', 'svg', 'An easy to use, full-featured SVG editor'
+  , function*(el) {
     var iframe = document.createElement('iframe')
     iframe.setAttribute('src', '/static/hive-editor-svg/lib/Method-Draw/index.html')
 
@@ -29,7 +28,7 @@ function setup(plugin, imports, register) {
       iframe.onload = function() {
         cb()
       }
-      editor.appendChild(iframe)
+      el.appendChild(iframe)
     }
 
     iframe.contentDocument.querySelector('#menu_bar').style['visibility'] = 'hidden'
