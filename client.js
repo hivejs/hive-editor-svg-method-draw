@@ -9,7 +9,7 @@ function setup(plugin, imports, register) {
   editor.registerEditor('Method-Draw', 'svg', 'An easy to use, full-featured SVG editor'
   , function*(el) {
     var iframe = document.createElement('iframe')
-    iframe.setAttribute('src', '/static/hive-editor-svg/lib/Method-Draw/index.html')
+    iframe.setAttribute('src', '/static/hive-editor-svg-method-draw/lib/Method-Draw/index.html')
 
     // Maximize editor
     document.body.style['position'] = 'absolute'
