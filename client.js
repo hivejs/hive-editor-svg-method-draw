@@ -19,7 +19,7 @@ function setup(plugin, imports, register) {
     iframe.setAttribute('border', '0')
 
     // load the editor
-    new Promise(function(resolve) {
+    return new Promise(function(resolve) {
       iframe.onload = function() {
         resolve()
       }
