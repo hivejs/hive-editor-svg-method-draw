@@ -11,12 +11,13 @@ function setup(plugin, imports, register) {
   ui.registerModule(path.join(__dirname, 'client.js'))
   ui.registerStaticDir(path.join(__dirname, 'lib'))
 
-  var _create = domOT.create
-  domOT.create = function(initialData) {
-    return _create(initialData || defaultInitialData)
-  }
+  var patchedDomOT = Object.assign({},domOT, {
+    create: function(initialData) {
+      return domOT.create(initialData || defaultInitialData)
+    }
+  })
 
-  ot.registerOTType('svg', domOT)
+  ot.registerOTType('svg', patchedDomOT)
 
   register()
 }
