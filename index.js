@@ -17,7 +17,7 @@ function setup(plugin, imports, register) {
     }
   })
 
-  ot.registerOTType('svg', patchedDomOT)
+  ot.registerOTType('image/svg+xml', patchedDomOT)
 
   register()
 }

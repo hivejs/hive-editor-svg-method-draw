@@ -7,7 +7,7 @@ function setup(plugin, imports, register) {
   var editor = imports.editor
     , ui = imports.ui
 
-  editor.registerEditor('Method-Draw', 'svg', 'An easy to use, full-featured SVG editor'
+  editor.registerEditor('Method-Draw', 'image/svg+xml', 'An easy to use, full-featured SVG editor'
   , function(el) {
     var iframe = document.createElement('iframe')
     iframe.setAttribute('src', ui.baseURL+'/static/hive-editor-svg-method-draw/lib/Method-Draw/index.html')
