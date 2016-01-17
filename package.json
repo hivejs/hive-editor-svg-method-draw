@@ -6,6 +6,7 @@
   "dependencies": {
     "gulf": "3.x",
     "dom-ot": "2.x",
+    "vdom-to-html": "2.x",
     "mutation-summary": "^0.0.0"
   },
   "scripts": {
