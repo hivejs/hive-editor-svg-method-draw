@@ -18,6 +18,15 @@ function setup(plugin, imports, register) {
     iframe.style['border'] = 'none'
     iframe.style['visibility'] = 'hidden'
 
+    window.addEventListener('scroll', updateFramePosition)
+    window.addEventListener('resize', updateFramePosition)
+
+    onClose(_ => {
+      window.removeEventListener('scroll', updateFramePosition)
+      window.removeEventListener('resize', updateFramePosition)
+      document.body.removeChild(iframe)
+    })
+
     // load the editor
     return new Promise(function(resolve) {
       iframe.onload = function() {
@@ -34,9 +43,6 @@ function setup(plugin, imports, register) {
       return Promise.resolve(bindEditor(methodDraw, iframe.contentDocument))
     })
 
-    window.addEventListener('scroll', updateFramePosition)
-    window.addEventListener('resize', updateFramePosition)
-
     function updateFramePosition() {
       var rect = el.getBoundingClientRect()
       iframe.style['top'] = rect.top+'px'
@@ -45,12 +51,6 @@ function setup(plugin, imports, register) {
       iframe.style['width'] = rect.width+'px'
       iframe.style['visibility'] = 'visible'
     }
-
-    onClose(_ => {
-      window.removeEventListener('scroll', updateFramePosition)
-      window.removeEventListener('resize', updateFramePosition)
-      document.body.removeChild(iframe)
-    })
   })
   register()
 }
