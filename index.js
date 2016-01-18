@@ -1,14 +1,23 @@
 var path = require('path')
   , domOT = require('dom-ot')
   , vdomToHtml = require('vdom-to-html')
+  , sanitizeHtml = require('sanitize-html')
+  , svgTags = require('svg-tags')
+
+// Turn {camelCase: 'real-attr'} into ['real-attr']
+var svgAttributes = (function(attrs){
+  return Object.keys(attrs).map(camel=>attrs[camel])
+})(require('svg-attributes'))
 
 module.exports = setup
-module.exports.consumes = ['ui', 'ot', 'importexport']
+module.exports.consumes = ['ui', 'ot', 'importexport', 'sync', 'orm']
 
 function setup(plugin, imports, register) {
   var ui = imports.ui
   var ot = imports.ot
   var importexport = imports.importexport
+  var sync = imports.sync
+  var orm = imports.orm
 
   ui.registerModule(path.join(__dirname, 'client.js'))
   ui.registerStaticDir(path.join(__dirname, 'lib'))
@@ -24,6 +33,35 @@ function setup(plugin, imports, register) {
   importexport.registerExportProvider('image/svg+xml', 'image/svg+xml'
   , function*(document, snapshot) {
     return vdomToHtml(JSON.parse(snapshot.contents))
+  })
+
+  importexport.registerImportProvider('image/svg+xml', 'image/svg+xml'
+  , function*(document, user, data) {
+    var sanitizedSvg = sanitizeHtml(data, {
+      allowedTags: svgTags
+    , allowedAttributes: {
+        '*': svgAttributes
+      }
+    })
+    var importedTree = domOT.create(sanitizedSvg)
+
+    // get gulf doc and prepare changes
+    var gulfDoc = yield sync.getDocument(document.id)
+      , root = gulfDoc.content
+      , insertPath = [root.childNodes.length]
+      , changes = [new domOT.Move(null, insertPath, domOT.serialize(importedTree))]
+
+    var snapshot = yield orm.collections.snapshot
+    .findOne({id: document.latestSnapshot})
+
+    // commit changes
+    yield function(cb) {
+      gulfDoc.receiveEdit(JSON.stringify({
+        cs: JSON.stringify(changes)
+      , parent: snapshot.id
+      , user: user
+      }), null, cb)
+    }
   })
 
   register()

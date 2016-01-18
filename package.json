@@ -7,6 +7,8 @@
     "gulf": "3.x",
     "dom-ot": "2.x",
     "vdom-to-html": "2.x",
+    "svg-tags": "1.x",
+    "svg-attributes": "1.x",
     "mutation-summary": "^0.0.0"
   },
   "scripts": {
