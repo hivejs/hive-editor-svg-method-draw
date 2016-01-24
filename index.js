@@ -47,7 +47,11 @@ function setup(plugin, imports, register) {
 
     // get gulf doc and prepare changes
     var gulfDoc = yield sync.getDocument(document.id)
-      , root = gulfDoc.content
+    yield function(cb) {
+      gulfDoc.on('init', cb)
+    }
+
+    var root = gulfDoc.content
       , insertPath = [root.childNodes.length]
       , changes = [new domOT.Move(null, insertPath, domOT.serialize(importedTree))]
 
