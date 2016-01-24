@@ -48,7 +48,7 @@ function setup(plugin, imports, register) {
     // get gulf doc and prepare changes
     var gulfDoc = yield sync.getDocument(document.id)
     yield function(cb) {
-      gulfDoc.on('init', cb)
+      gulfDoc.once('init', cb)
     }
 
     var root = gulfDoc.content
