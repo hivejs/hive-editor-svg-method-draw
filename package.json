@@ -4,11 +4,12 @@
   "description": "SVG editor for hive.js",
   "main": "index.js",
   "dependencies": {
-    "gulf": "3.x",
+    "gulf": "4.x",
     "dom-ot": "2.x",
     "vdom-to-html": "2.x",
     "svg-tags": "1.x",
     "svg-attributes": "1.x",
+    "sanitize-html": "1.x",
     "mutation-summary": "^0.0.0"
   },
   "scripts": {
