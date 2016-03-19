@@ -25,7 +25,7 @@ function setup(plugin, imports, register) {
     onClose(_ => {
       window.removeEventListener('scroll', updateFramePosition)
       window.removeEventListener('resize', updateFramePosition)
-      document.body.removeChild(iframe)
+      if(document.body.contains(iframe)) document.body.removeChild(iframe)
     })
 
     // load the editor
