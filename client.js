@@ -43,7 +43,7 @@ function setup(plugin, imports, register) {
       var methodDraw = iframe.contentDocument.defaultView.methodDraw
         , doc = bindEditor(methodDraw, iframe.contentDocument)
       doc.once('editableInitialized', () => {
-	updateFramePosition()
+	setImmediate(updateFramePosition) // Defer, because the loading bar disappears on the same event
       })
       return Promise.resolve(doc)
     })
