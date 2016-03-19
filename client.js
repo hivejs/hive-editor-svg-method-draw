@@ -16,7 +16,8 @@ function setup(plugin, imports, register) {
     el.style['height'] = '100%'
     iframe.style['position'] = 'absolute'
     iframe.style['border'] = 'none'
-    iframe.style['visibility'] = 'hidden'
+    iframe.style['width'] = '0px' // hide initially until content is loaded
+    iframe.style['height'] = '0px'
 
     window.addEventListener('scroll', updateFramePosition)
     window.addEventListener('resize', updateFramePosition)
@@ -34,13 +35,17 @@ function setup(plugin, imports, register) {
       }
       // we don't add it to #editor `el`, because vdom cannot handle iframes
       document.body.appendChild(iframe)
-    }).then(function() {
-      setImmediate(updateFramePosition)
+    })
+    .then(() => {
       iframe.contentDocument.querySelector('#menu_bar').style['visibility'] = 'hidden'
 
-      /* bind editor */
+      // bind editor
       var methodDraw = iframe.contentDocument.defaultView.methodDraw
-      return Promise.resolve(bindEditor(methodDraw, iframe.contentDocument))
+        , doc = bindEditor(methodDraw, iframe.contentDocument)
+      doc.once('editableInitialized', () => {
+	updateFramePosition()
+      })
+      return Promise.resolve(doc)
     })
 
     function updateFramePosition() {
