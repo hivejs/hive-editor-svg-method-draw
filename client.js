@@ -54,7 +54,6 @@ function setup(plugin, imports, register) {
       iframe.style['left'] = rect.left+'px'
       iframe.style['height'] = rect.height+'px'
       iframe.style['width'] = rect.width+'px'
-      iframe.style['visibility'] = 'visible'
     }
   })
   register()
